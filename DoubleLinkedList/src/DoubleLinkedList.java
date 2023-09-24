@@ -1,0 +1,221 @@
+public class DoubleLinkedList {
+    /**
+     * Clase DobleDobleNodo genérica
+     * @param <E> Valor generico E
+     */
+    static class DobleNodo<E>{
+        E dato;
+        DobleNodo<E> sig;
+        DobleNodo<E> ant;
+
+        /**
+         * Crea el DobleNodo suelto de la lista circular simple
+         * @param dato Dato numerico/texto/objeto
+         */
+        public DobleNodo(E dato) {
+            this.dato = dato;
+            this.sig = null;
+            this.ant = null;
+        }
+    }
+
+    /**
+     * Lista Doble Simple
+     * @param <E>
+     */
+    static class DoubleList<E>{
+        DobleNodo<E> cab;
+        DobleNodo<E> fin;
+
+        /**
+         * Carga inicial de la lista doble simple
+         */
+        public DoubleList() {
+            this.cab = null;
+            this.fin = null;
+        }
+
+        /**
+         * Insertar valor a la izquierda de la lista doble
+         * @param dato Dato numerico/texto/objeto
+         */
+        public void insertarIzquierda(E dato)
+        {
+            DobleNodo<E> nuevo = new DobleNodo<>(dato);
+            if(cab==null){
+                cab = nuevo;
+                fin = nuevo;
+                nuevo.sig = null;
+                nuevo.ant = null;
+            }
+            else{
+                nuevo.sig = cab;
+                cab.ant = nuevo;
+                nuevo.ant = null;
+                cab = nuevo;
+            }
+        }
+
+        /**
+         * Insertar valor a la derecha de la lista doble
+         * @param dato Dato numerico/texto/objeto
+         */
+        public void insertarDerecha(E dato)
+        {
+            DobleNodo<E> nuevo = new DobleNodo<>(dato);
+            if(cab==null){
+                cab = nuevo;
+                fin = nuevo;
+                nuevo.sig = null;
+                nuevo.ant = null;
+            }
+            else{
+                nuevo.sig = null;
+                nuevo.ant = fin;
+                fin.sig = nuevo;
+                fin = nuevo;
+            }
+        }
+
+        /**
+         * Insertar valor a la derecha del indice señalado
+         * @param indice Un numero entre 0 y el tamaño - 1 de la lista circular simple
+         * @param dato Dato numerico/texto/objeto
+         */
+        public void insertarIndice(int indice, E dato) {
+            DobleNodo<E> nuevo = new DobleNodo(dato);
+            if (indice == 0) {
+                cab = nuevo;
+                fin = nuevo;
+                nuevo.sig = null;
+                nuevo.ant = null;
+            } else {
+                DobleNodo<E> prox;
+                DobleNodo<E> prev;
+                int i= 0;
+                for(prox = cab; prox.sig!=null && i < indice - 1; prox = prox.sig)
+                    i++;
+                prev = prox.ant;
+                prev.sig = nuevo;
+                nuevo.ant = prev;
+                nuevo.sig = prox;
+                prox.ant = nuevo;
+            }
+        }
+
+        /**
+         * Eliminar el indice señalado quitando el DobleNodo contado
+         * @param indice Un numero entre 0 y el tamaño - 1 de la lista doble simple
+         */
+        public void borrarIndice(int indice) {
+            DobleNodo<E> prox;
+            DobleNodo<E> prev;
+            if (indice == 0) {
+                if (this.size()>1) {
+                    prox = cab;
+                    cab = cab.sig;
+                    prox = null;
+                    cab.ant = null;
+                } else {
+                    cab.sig = null;
+                    cab.ant = null;
+                    cab = null;
+                }
+            } else if (indice == this.size() - 1) {
+                DobleNodo<E> aux = fin;
+                fin = aux.ant;
+                fin.sig = null;
+                aux = null;
+            } else {
+                int i = 0;
+                DobleNodo<E> aux;
+                for(prox = cab; prox.sig!=null && i < indice; prox = prox.sig)
+                    i++;
+                aux = prox.sig;
+                prev = prox.ant;
+                prev.sig = aux;
+                aux.ant = prev;
+                prox = null;
+            }
+        }
+
+        /**
+         * Devuelve el tamaño de la lista
+         * @return Un valor entero del tamaño total de la lista
+         */
+        public int size() {
+            int contador = 1;
+            DobleNodo<E> aux = cab;
+            for (aux = cab; aux.sig != null; aux = aux.sig)
+                contador++;
+            return contador;
+        }
+
+        /**
+         * Obtener el valor de un elemento de la lista doble simple
+         * @param indice numero de indice elegido
+         * @return el valor del índice seleccionado
+         */
+        public E get(int indice) {
+            DobleNodo<E> aux = null;
+            if(indice < this.size()) {
+                int i = 0;
+                for (aux = cab; aux.sig != null && i < indice; aux = aux.sig)
+                    i++;
+                return (E) aux.dato;
+            }
+            else {
+                return null;
+            }
+        }
+
+        /**
+         * Recorre la lista doble simple controlando la cabecera
+         */
+        public void recorridoListaDerecha(){
+            DobleNodo<E> aux = cab;
+            while(aux!=null){
+                System.out.print(aux.dato + "->");
+                aux = aux.sig;
+            }
+            System.out.print("\n");
+        }
+
+        /**
+         * Recorre la lista doble simple controlando el final
+         */
+
+        public void recorridoListaIzquierda(){
+            DobleNodo<E> aux = fin;
+            while(aux!=null){
+                System.out.print(aux.dato + "->");
+                aux = aux.ant;
+            }
+            System.out.print("\n");
+        }
+
+        /**
+         * Verificamos si la lista circular esta vacia
+         * @return Un valor booleano true si la lista esta vacia
+         */
+        public boolean isEmpty(){
+            return cab == null;
+        }
+    }
+
+    public static void main(String[] args) {
+        // casos simples
+        DoubleList<Integer> listado = new DoubleList<>();
+        listado.insertarIzquierda(3);
+        listado.insertarIzquierda(2);
+        listado.insertarIzquierda(1);
+        listado.insertarIndice(2,4);
+        listado.recorridoListaDerecha();
+        listado.recorridoListaIzquierda();
+        System.out.println("Tamaño de la lista: " + listado.size());
+        listado.borrarIndice(3);
+        listado.recorridoListaDerecha();
+        listado.recorridoListaIzquierda();
+        System.out.println("Elemento 3: " + listado.get(5));
+    }
+}
