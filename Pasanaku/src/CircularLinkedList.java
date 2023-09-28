@@ -2,10 +2,10 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.csvreader.CsvReader;
-
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.Iterator;
+import java.util.Scanner;
 
 @SuppressWarnings("ALL")
 class Nodo<T> {
@@ -105,22 +105,27 @@ class ListaCircularSimpleIterator implements Iterator<Estudiante> {
 @SuppressWarnings("ALL")
 public class CircularLinkedList {
     public static void main(String[] args) {
+        Scanner oScan = new Scanner(System.in);
         System.out.println("PASANAKU SISTEMAS");
-        BigDecimal cuota = new BigDecimal(300);
+        BigDecimal cuota = new BigDecimal(0);
         CircularList<Estudiante> listado1 = new CircularList<>();
+        System.out.println("Ingrese la cuota para el pasanaku en Bs.:");
+        cuota = new BigDecimal(oScan.next());
+        BigDecimal pagoMes = cuota.multiply(BigDecimal.valueOf(9));
         LocalDateTime fecha = LocalDateTime.now();
         System.out.println(fecha);
-        cargarArchivo(listado1, cuota);
+        cargarArchivo(listado1, pagoMes, fecha);
+        /*
         System.out.println(fecha.plusMonths(3));
         System.out.println("La fecha actual es: " + LocalDate.now());
         System.out.println("La hora actual es: " + LocalTime.now() );
         System.out.println("La fecha y hora actuales son: " + LocalDateTime.now() );
         System.out.println("El instante actual es: " + Instant.now() );
         System.out.println("La fecha y hora actuales con zona horaria son: " + ZonedDateTime.now());
-
+        */
     }
 
-    private static void cargarArchivo(CircularList<Estudiante> listado1, BigDecimal cuota) {
+    private static void cargarArchivo(CircularList<Estudiante> listado1, BigDecimal cuota, LocalDateTime fecha) {
         try{
             String archivo = System.getProperty("user.dir") + "\\ejemplo.csv";
             String[] linea;
@@ -128,9 +133,10 @@ public class CircularLinkedList {
             estudiantes.readHeaders();
             while (estudiantes.readRecord())
             {
+                fecha = fecha.plusMonths(1);
                 int codigo = Integer.parseInt(estudiantes.get("CodigoEstudiante"));
                 String nombre = estudiantes.get("NombreEstudiante");
-                listado1.insertar(new Estudiante(codigo, nombre, LocalDateTime.now(), cuota));
+                listado1.insertar(new Estudiante(codigo, nombre, fecha, cuota));
             }
             estudiantes.close();
         } catch (FileNotFoundException e) {
