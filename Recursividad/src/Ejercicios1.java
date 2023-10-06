@@ -26,11 +26,22 @@ public class Ejercicios1 {
         }
     }
 
+    public static void imprimirVectorRecursivo(int[] vector, int indice) {
+        // Comprueba si el índice está dentro de los límites del vector
+        if (indice < vector.length) {
+            // Imprime el elemento en el índice actual
+            System.out.print(vector[indice] + " ");
+            // Llama recursivamente a la función para el siguiente índice
+            imprimirVectorRecursivo(vector, indice + 1);
+        }
+    }
+
     public static void main(String[] args) {
         // vector recursivo
         System.out.println("Suma y Resta de Vectores Recursivos");
         int[] listaLibros = new int[]{90, 120, 50};
-        Arrays.stream(listaLibros).mapToObj(listaLibro -> listaLibro + "\t").forEach(System.out::print);
+        imprimirVectorRecursivo(listaLibros,0);
+        //Arrays.stream(listaLibros).mapToObj(listaLibro -> listaLibro + "\t").forEach(System.out::print);
         System.out.println("");
         int total = sumaResta(listaLibros);
         System.out.println(total);
@@ -40,7 +51,6 @@ public class Ejercicios1 {
         int[] vectorPares = new int[n];
         vectorPares = generarVector(n, 2, vectorPares, 0);
         // Imprimir el array de números pares generados
-        for (int i = 0; i < n; i++)
-            System.out.print(vectorPares[i] + "\t");
+        imprimirVectorRecursivo(vectorPares,0);
     }
 }
