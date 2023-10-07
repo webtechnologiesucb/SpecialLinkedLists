@@ -3,16 +3,38 @@ public class CasosMatrices {
         int n = 4; // tamaño de filas y columnas
         int[][] matriz = generarMatrizCaracol(n);
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                System.out.print(matriz[i][j] + "\t");
-            }
-            System.out.println();
+        imprimirMatriz(matriz, 0, 0);
+    }
+
+    /**
+     * Imprimir la matriz de forma recursiva
+     * @param matriz Matriz generada de forma recursiva
+     * @param fila Posicion de Fila
+     * @param columna Posicion de Columna
+     */
+    public static void imprimirMatriz(int[][] matriz, int fila, int columna) {
+        // Caso base: cuando llegamos al final de la matriz
+        if (fila == matriz.length) {
+            return;
+        }
+
+        // Imprimimos el elemento actual
+        System.out.print(matriz[fila][columna] + "\t");
+
+        // Movemos a la siguiente columna
+        if (columna + 1 < matriz[fila].length) {
+            imprimirMatriz(matriz, fila, columna + 1);
+        }
+        // Si llegamos al final de la fila, nos movemos a la siguiente fila
+        else {
+            System.out.println(); // Cambiamos de línea al final de cada fila
+            imprimirMatriz(matriz, fila + 1, 0);
         }
     }
 
     /**
      * Generador de la estructura de la matriz caracol
+     *
      * @param n Tamaño de la matriz
      * @return La matriz generada
      */
@@ -23,12 +45,13 @@ public class CasosMatrices {
 
     /**
      * Genera la matriz caracol considerando los parametros solicitados
-     * @param matriz La matriz de ingreso
-     * @param valor El valor numerico
-     * @param fila Posicion de filas
+     *
+     * @param matriz  La matriz de ingreso
+     * @param valor   El valor numerico
+     * @param fila    Posicion de filas
      * @param columna Posicion de la columna
-     * @param n Tamaño de filas y columnas
-     * @param ruta ruta de registro de los numeros: arriba, abajo, izquierda y derecha
+     * @param n       Tamaño de filas y columnas
+     * @param ruta    ruta de registro de los numeros: arriba, abajo, izquierda y derecha
      * @return La matriz caracol generaada
      */
     private static int[][] generarMatrizRecursiva(int[][] matriz, int valor, int fila, int columna, int n, String ruta) {
